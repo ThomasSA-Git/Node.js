@@ -7,7 +7,7 @@ consoleLogCounter++;
 
 // Variabler: String, Number, Boolean, BigInteger, Undefined, null, Object og Symbol
 
-// Object indeholder: Object, Array og dato
+// Object indeholder: Object, Array og date
 
 // Type coercion
 
