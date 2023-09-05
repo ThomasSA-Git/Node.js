@@ -37,6 +37,23 @@ app.get("/wallet/:withdrawal", (req, res) => {
     };
 });
 
+
+app.get("/cat", (req, res) => {
+    console.log(req.query);
+    res.send({ message: "yes" });
+});
+
+app.get("/pirate", (req, res) => {
+    
+    res.send({ message: "yes" });
+});
+
+app.post("/cat", (req, res) => {
+
+    console.log(req.body);
+    res.send(req.body);
+});
+
 // 80 http
 // 443 https
 // 8080 http developer port.
