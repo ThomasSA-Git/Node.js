@@ -1,13 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Solution 3: Link
+    <link rel="stylesheet" href=""> -->
+    <style>
+        /* Solution 2: In-file */
+        #title{
+            color: red
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>First html</title>
 </head>
 <body>
     
-    <h1>HOME</h1>
+    <!-- Solution 1: In-line styling -->
+    <!-- <h1 id="title" style="color: red;">HOME</h1> -->
 
+    <h1 id="title">HOME</h1>
+
+    <p id="welcomeMessage"></p>
+
+    <a href="/secondPage">Second page</a>
+
+<script>
+/* assignment: fetch welcomeMessage and console.log it
+ assigntment bonus:  show it on the page */
+ 
+// Assignment personalize
+
+fetch("/welcomeMessage?user=Thomas")
+.then((response) => response.json())
+.then((result) => {
+    const welcomeMessage = document.getElementById("welcomeMessage");
+    welcomeMessage.innerText = result.data;
+    console.log(result);
+});
+
+</script>
+
+
+  <!-- assignment: console log in the console "hello" a second after the client visits the frontpage-->
+
+<!--     <script>
+        setTimeout(() => {
+            console.log("hello.");
+        }, 1000);
+    </script>
+ -->
 </body>
 </html>
