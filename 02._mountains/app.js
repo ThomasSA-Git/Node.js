@@ -13,12 +13,13 @@ app.listen(PORT, (error) => {
 });
 
 
-const mountains = [
+let mountains = [
     { id: 1, name: "Mount Fuji", height: 3776 },
     { id: 2, name: "Kilimanjaro", height: 5895 },
     { id: 3, name: "Himmelbjerget", height: 147 },
 ]
 
+let currentId = 3;
 
 app.get("/mountains", (req, res) => {
    
@@ -30,14 +31,14 @@ app.get("/mountains/:id", (req, res) => {
     const mountainId = Number(req.params.id);
 
     if  (!mountainId) {
-        res.send({ error: "The mountain id must be a number."})
+        res.status(404).send({ error: "The mountain id must be a number."})
     }
 
     // Find mountain by id
     const mountain = mountains.find(mountain => mountain.id === mountainId);
   
     if (!mountain) {
-        res.send({ message: "No mountain with that id." });
+        res.status(404).send({ error: "No mountain with that id." });
     } else {
         res.send({ data: mountain });
     }
@@ -52,7 +53,8 @@ app.post("/mountains", (req, res) => {
         return;
     }
 
-    newMountain.id = mountains.length + 1;
+    // Prefixed increment used for currentId instead of postfixed increment (currentId++).
+    newMountain.id = ++currentId;
     mountains.push(newMountain);
     
     res.send({ data: newMountain });
@@ -64,18 +66,18 @@ app.patch("/mountains/:id", (req, res) => {
     const updatedMountain = req.body;
 
     if (!mountainId || !updatedMountain || (!updatedMountain.name && !updatedMountain.height)) {
-        res.send({ error: 'Invalid update data.' });
+        res.status(404).send({ error: 'Invalid update data.' });
         return;
     }
 
     const existingMountain = mountains.findIndex(mountain => mountain.id === mountainId);
     
     if (existingMountain === -1) {
-        res.send({ message: "No mountain with that id." });
+        res.status(404).send({ error: "No mountain with that id." });
     } else {
-        updatedMountain.id = mountains[existingMountain].id;
-        mountains[existingMountain].height = updatedMountain.height;
-        res.send({ message: mountains[existingMountain]})
+        mountains[existingMountain] = { ...mountains[existingMountain], ...updatedMountain, id: mountainId };
+        //mountains[existingMountain].height = updatedMountain.height;
+        res.send({ message: mountains[existingMountain] })
     }
 
 });
@@ -92,7 +94,7 @@ app.put("/mountains/:id", (req, res) => {
     const existingMountain = mountains.findIndex(mountain => mountain.id === mountainId);
     
     if (existingMountain === -1) {
-        res.send({ message: "No mountain with that id." });
+        res.status(404).send({ error: "No mountain with that id." });
     } else {
         updatedMountain.id = mountains[existingMountain].id;
         mountains[existingMountain] = updatedMountain;
@@ -112,9 +114,9 @@ app.delete("/mountains/:id", (req, res) => {
     const existingMountainIndex = mountains.findIndex((mountain) => mountain.id === mountainId);
 
     if (existingMountainIndex === -1) {
-        res.send({ message: 'No mountain with that id.' });
+        res.status(404).send({ error: 'No mountain with that id.' });
     } else {
-        const deletedMountain = mountains.splice(existingMountainIndex)[0];
+        deletedMountain = mountains.splice(existingMountainIndex, 1);
         res.send({ data: deletedMountain });
     }
 
