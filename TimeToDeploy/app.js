@@ -31,7 +31,6 @@ app.get("/gettimezone", (req, res) => {
     try {
         if (city) {
             
-            console.log(city.offset);
             res.json({ city: city.name, offSet: city.offset });
         } else {
             res.status(400).json({ error: "City not found or time zone information not available." });
