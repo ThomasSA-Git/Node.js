@@ -16,9 +16,10 @@ app.get("/", (req, res) => {
 // list of cities with their corresponding time zone offsets. Might add more.
 const cities = [
     { name: "New York", offset: -4 },
-    { name: "London", offset: 0 },
+    { name: "Beijing", offset: 8 },
     { name: "Tokyo", offset: 9 },
     { name: "Copenhagen", offset: 0 },
+    { name: "Los Angeles", offset: -7 },
 ];
 
 app.get("/gettimezone", (req, res) => {
@@ -30,10 +31,8 @@ app.get("/gettimezone", (req, res) => {
     try {
         if (city) {
             
-            const now = new Date();
-            now.setHours(now.getHours() + city.offset);
-
-            res.json({ city: city.name, time: now });
+            console.log(city.offset);
+            res.json({ city: city.name, offSet: city.offset });
         } else {
             res.status(400).json({ error: "City not found or time zone information not available." });
         }

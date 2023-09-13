@@ -4,7 +4,7 @@
     <style>
         body {
             text-align: center;
-            background-color: rgb(179, 179, 195);
+            background-color: blue;
         }
         h1 {
             color: hsl(358, 82%, 36%);
@@ -25,33 +25,36 @@
         <label for="city">Select a City:</label>
         <select id="city">
             <option value="New York">New York</option>
-            <option value="Beijing">Beijing</option>
+            <option value="London">London</option>
             <option value="Tokyo">Tokyo</option>
             <option value="Copenhagen">Copenhagen</option>
-            <option value="Los Angeles">Los Angeles</option>
+            <!-- Add more cities as options -->
         </select>
-        <button type="submit">Get time</button>
+        <button type="submit">Get Time Zone Offset</button>
     </form>
 
+    <div id="result"></div>
 
-    <div id="city-clock" class="clock"></div>
+    <!-- Add a clock element for the selected city -->
+    <div id="city-clock" class="clock">Loading...</div>
 
-    <div id="local-clock" class="clock"></div>
+    <!-- Add a clock element for UTC time -->
+    <div id="utc-clock" class="clock">Loading...</div>
 
     <script>
         let offSet = 0;
 
         function updateClock() {
         const now = new Date();
-        const clockElement = document.getElementById("local-clock");
-        clockElement.textContent = `Current local time: ${now.toLocaleTimeString()}`;
+        const clockElement = document.getElementById("utc-clock");
+        clockElement.textContent = `Current Time UTC: ${now.toLocaleTimeString()}`;
         }
 
         function updateClock2() {
         const now = new Date();
         now.setHours(now.getHours() + offSet);
         const clockElement = document.getElementById("city-clock");
-        clockElement.textContent = `Current time in selected city: ${now.toLocaleTimeString()}`;
+        clockElement.textContent = `Current in selected city: ${now.toLocaleTimeString()}`;
         }
 
         setInterval(updateClock, 1000);
@@ -68,15 +71,22 @@
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.error) {
-                         result.textContent = data.error;
+                        result.textContent = data.error;
                     } else {
-                        offSet = data.offSet;
-                        updateClock2();
-        }
-        })
-        .catch((error) => {
-        result.textContent = "An error occurred while fetching data.";
-        });
+                        offSet = data.city.offSet;
+                        
+                        //const timeDate = new Date(data.time);
+
+
+                        //const formattedTime = timeDate.toLocaleTimeString();
+                        //const formattedDate = timeDate.toLocaleDateString();
+                        
+                        //result.textContent = `In ${data.city} it's ${formattedTime} o'clock and the date is ${formattedDate}`;   
+                    }
+                })
+                .catch((error) => {
+                    result.textContent = "An error occurred while fetching data.";
+                });
         });
 
        
