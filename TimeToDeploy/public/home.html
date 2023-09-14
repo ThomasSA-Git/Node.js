@@ -42,57 +42,58 @@
             <option value="Tokyo">Tokyo</option>
             <option value="Los Angeles">Los Angeles</option>
         </select>
-        <button type="submit">Get time</button>
     </form>
 
     <div class="container">
         <div id="city-clock" class="clock"></div>
         <div id="local-clock" class="clock"></div>
+        <div id="error"></div>
     </div>
-    <div class="container">
-    <div class="countdown" id="countdown"></div>
-    
+        <div class="container">
+        <div class="countdown" id="countdown"></div>
     </div>
     <script>
         let offSet = 0;
 
         function updateClock() {
-        const now = new Date();
-        const clockElement = document.getElementById("local-clock");
-        clockElement.textContent = `Current local time: ${now.toLocaleTimeString()}`;
+            const now = new Date();
+            const clockElement = document.getElementById("local-clock");
+            clockElement.textContent = `Current local time: ${now.toLocaleTimeString()}`;
         }
 
         function updateClock2() {
-        const now = new Date();
-        now.setHours(now.getHours() + offSet);
-        const clockElement = document.getElementById("city-clock");
-        clockElement.textContent = `Current time in selected city: ${now.toLocaleTimeString()}`;
+            const now = new Date();
+            now.setHours(now.getHours() + offSet);
+            const clockElement = document.getElementById("city-clock");
+            clockElement.textContent = `Current time in selected city: ${now.toLocaleTimeString()}`;
         }
 
         setInterval(updateClock, 1000);
         setInterval(updateClock2, 1000);
 
 
-        document.getElementById("timezone-form").addEventListener("submit", (e) => {
-            e.preventDefault();
-
+        function handleCitySelection() {
             const cityName = document.getElementById("city").value;
-            const result = document.getElementById("result");
+            const errorMessage = document.getElementById("error")
 
             fetch(`/gettimezone?city=${cityName}`)
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.error) {
-                         result.textContent = data.error;
+                        errorMessage.textContent = data.error;
                     } else {
                         offSet = data.offSet;
                         updateClock2();
+                    }
+            })
+            .catch((error) => {
+                    result.textContent = "An error occurred while fetching data.";
+            });
         }
-        })
-        .catch((error) => {
-        result.textContent = "An error occurred while fetching data.";
-        });
-        });
+
+        document.getElementById("city").addEventListener("change", handleCitySelection);
+
+        handleCitySelection();
 
        
         updateClock();
@@ -104,21 +105,20 @@
         const countdownInterval = setInterval(updateCountdown, 1000);
 
         function updateCountdown() {
-        const currentDate = new Date().getTime();
-        const timeRemaining = targetDate - currentDate;
+            const currentDate = new Date().getTime();
+            const timeRemaining = targetDate - currentDate;
 
-         if (timeRemaining <= 0) {
-        clearInterval(countdownInterval);
-        document.getElementById("countdown").textContent = "Countdown dome";
-        } else {
+            if (timeRemaining <= 0) {
+            clearInterval(countdownInterval);
+            document.getElementById("countdown").textContent = "Countdown dome";
+            } else {
 
-        // Calculate days, hours, minutes, and seconds
-        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
-        document.getElementById("countdown").textContent = `Countdown for Kanye Wests birthday: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+            document.getElementById("countdown").textContent = `Countdown for Kanye Wests birthday: ${days}d ${hours}h ${minutes}m ${seconds}s`;
             }
         }
 
