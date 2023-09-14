@@ -61,7 +61,7 @@
             clockElement.textContent = `Current local time: ${now.toLocaleTimeString()}`;
         }
 
-        function updateClock2() {
+        function updateCityClock() {
             const now = new Date();
             now.setHours(now.getHours() + offSet);
             const clockElement = document.getElementById("city-clock");
@@ -69,7 +69,7 @@
         }
 
         setInterval(updateClock, 1000);
-        setInterval(updateClock2, 1000);
+        setInterval(updateCityClock, 1000);
 
 
         function handleCitySelection() {
@@ -83,7 +83,7 @@
                         errorMessage.textContent = data.error;
                     } else {
                         offSet = data.offSet;
-                        updateClock2();
+                        updateCityClock();
                     }
             })
             .catch((error) => {
@@ -97,7 +97,7 @@
 
        
         updateClock();
-        updateClock2();
+        updateCityClock();
 
     
         const targetDate = new Date("June 8, 2024 00:00:01").getTime();
