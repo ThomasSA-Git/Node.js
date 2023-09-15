@@ -8,6 +8,23 @@ app.listen(PORT, () => {
     console.log("App is running on port: ", PORT);
 });
 
+
+function fetchKanyeQuote() {
+    return fetch("https://api.kanye.rest")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
+          console.log(data.error);
+        } else {
+          console.log(data.quote);
+          return { quote: data.quote };
+        }
+      })
+      .catch((error) => {
+        console.log("An error occurred while fetching data.");
+      });
+  }
+
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/public/home.html");
 });
@@ -31,11 +48,20 @@ app.get("/gettimezone", (req, res) => {
     try {
         if (city) {
             
-            res.json({ city: city.name, offSet: city.offset });
+            res.send({ city: city.name, offSet: city.offset });
         } else {
-            res.status(400).json({ error: "City not found or time zone information not available." });
+            res.status(400).send({ error: "City not found or time zone information not available." });
         }
     } catch (error) {
-        res.status(500).json({ error: "An error occurred." });
+        res.status(500).send({ error: "An error occurred: "});
     }
 });
+
+app.get("/kanye", async (req, res) => {
+    try {
+      const quoteData = await fetchKanyeQuote();
+      res.send(quoteData);
+    } catch (error) {
+      res.status(500).send({ error: "An error occurred." });
+    }
+  });

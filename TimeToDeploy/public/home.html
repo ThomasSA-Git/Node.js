@@ -25,6 +25,14 @@
             margin-left: 400px;
             margin-right: 400px;
         }
+        p {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        button {
+            margin-top: 10px;
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,10 +55,14 @@
     <div class="container">
         <div id="city-clock" class="clock"></div>
         <div id="local-clock" class="clock"></div>
-        <div id="error"></div>
+        <div id="error-clock"></div>
     </div>
         <div class="container">
         <div class="countdown" id="countdown"></div>
+        <p>Inspiring Kanye West quote: </p>
+        <div id="quote"></div>
+        <button id="get-quote">Get new Kanye quote</button>
+        <div id="error-quote"></div>
     </div>
     <script>
         let offSet = 0;
@@ -74,7 +86,7 @@
 
         function handleCitySelection() {
             const cityName = document.getElementById("city").value;
-            const errorMessage = document.getElementById("error")
+            const errorMessage = document.getElementById("error-clock")
 
             fetch(`/gettimezone?city=${cityName}`)
                 .then((response) => response.json())
@@ -87,7 +99,7 @@
                     }
             })
             .catch((error) => {
-                    result.textContent = "An error occurred while fetching data.";
+                    errorMessage.textContent = "An error occurred while fetching data.";
             });
         }
 
@@ -123,6 +135,28 @@
         }
 
         updateCountdown();
+
+        function getKanyeQuote() {
+            let quoteElement = document.getElementById("quote");
+            const errorMessage = document.getElementById("error-quote")
+            fetch("/kanye")
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.error) {
+                        errorMessage.textContent = data.error;
+                    } else {
+                        console.log(data)
+                        quoteElement.innerHTML = data.quote;
+                    }
+            })
+            .catch((error) => {
+                    errorMessage.textContent = "An error occurred while fetching data.";
+            });
+        }
+
+        document.getElementById("get-quote").addEventListener("click", getKanyeQuote);
+
+        getKanyeQuote();
     </script>
 </body>
 </html>
