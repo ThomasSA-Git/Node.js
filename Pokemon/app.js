@@ -1,25 +1,33 @@
 import express from "express";
 const app = express();
 
-import path from "path";
+// not needed anymore. We use relative path instead of absolute
+// import path from "path";
 
-import { randomIntFromInterval, randomPokemonId } from "./util/randomUtil.js";
+import { randomIntFromInterval } from "./util/randomUtil.js";
 
 app.use(express.json());
 app.use(express.static("public"));
 
 // =====================html====================
 
+
+// Setting up pages
+import { frontpagePage, battlePage, contactPage } from "./util/preparePages.js";
+
+
+// =====================html====================
+
 app.get("/", (req, res) => {
-  res.sendFile(path.resolve("./public/frontpage/frontpage.html"));
+  res.send(frontpagePage);
 });
 
 app.get("/battle", (req, res) => {
-  res.sendFile(path.resolve("./public/battle/battle.html"));
+  res.send(battlePage);
 });
 
 app.get("/contact", (req, res) => {
-  res.sendFile(path.resolve("./public/contact/contact.html"));
+  res.send(contactPage);
 });
 
 // =====================html====================
@@ -84,5 +92,6 @@ app.get("/battlepokemon", (req, res) => {
 
 //every time battle is entered, pokemon looses one strength. Gets pokemon by entering start page.
 
-const PORT = 8080;
+// const PORT = process.env.PORT ? Number(process.env.PORT) : 8080;
+const PORT = Number(process.env.PORT) || 8080;
 app.listen(PORT, () => console.log("Server is running on port:", PORT));
