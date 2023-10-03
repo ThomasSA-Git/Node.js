@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Solution 3: Link
-    <link rel="stylesheet" href=""> -->
-    <style>
+    <!-- Solution 3: Link -->
+    <link rel="stylesheet" href="home.css">
+<!--     <style>
         /* Solution 2: In-file */
         #title{
             color: red
         }
-    </style>
+    </style> -->
+<!-- meta redirection    <meta http-equiv="refresh" content="3; url='/secondPage'" /> -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>First html</title>
@@ -22,32 +23,31 @@
 
     <p id="welcomeMessage"></p>
 
+  <!--   redirecting in html -->
     <a href="/secondPage">Second page</a>
 
-<script>
-/* assignment: fetch welcomeMessage and console.log it
- assigntment bonus:  show it on the page */
- 
-// Assignment personalize
+    <script>
+        // dynamic redirecting
 
-fetch("/welcomeMessage?user=Thomas")
-.then((response) => response.json())
-.then((result) => {
-    const welcomeMessage = document.getElementById("welcomeMessage");
-    welcomeMessage.innerText = result.data;
-    console.log(result);
-});
+        setTimeout(() => {
+            window.location.href = "/secondPage";
+        }, 3000);
 
-</script>
+/*      or   
+        setTimeout(() => {
+            window.location.replace("/secondPage");
+        }, 3000); */
 
+    </script>
 
-  <!-- assignment: console log in the console "hello" a second after the client visits the frontpage-->
+  <!-- assignment: console log in the console "hello" a second after the client visits the frontpage
 
-<!--     <script>
+   <script>
         setTimeout(() => {
             console.log("hello.");
         }, 1000);
     </script>
  -->
+ <script src="/home.js"></script>
 </body>
 </html>

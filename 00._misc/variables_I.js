@@ -16,7 +16,7 @@ consoleLogCounter++;
 console.log("This is the first");
 
 console.log('This is the second');
-
+    
 console.log(`This is the third`);
 
 consoleLogCounter += 3;

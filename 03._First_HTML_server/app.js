@@ -1,7 +1,12 @@
 const express = require(`express`);
 const app = express();
-
 app.use(express.json());
+
+// Her server jeg static.
+app.use(express.static("public"));
+
+const { getWelcomeMessage } = require("./util/welcomeMessageUtil.js");
+const e = require("express");
 
 const PORT = 8080;
 
@@ -23,14 +28,24 @@ app.get("/secondPage", (req, res) => {
 
 // ###################################
 
-app.get("/welcomeMessage", (req, res) => {
-  const user = req.query.user;
 
-  if (!user) {
-    res.send({ data: "Hello stranger" });
-  } else {
-    res.send({ data: `Welcome to my fancy website ${user}` });
-  }
+console.log()
+
+app.get("/welcomeMessage", (req, res) => {
+  const clientName = req.query.user;
+
+  const welcomeMessage = getWelcomeMessage(clientName);
+
+  res.send({ data: welcomeMessage });
 });
 
 // ###################################
+
+app.get("/doorman/:key", (req, res) => {
+  if(req.params.key === "sesameopenup"){
+    // return needed below because endpoint can return two responses for one request.
+    // Server side redirection.
+    return res.redirect("/welcomeMessage");
+  }
+  res.send({ data: "You have not provided the correct key."} );
+});
