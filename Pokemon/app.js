@@ -90,7 +90,15 @@ app.get("/battlepokemon", (req, res) => {
   }
 });
 
-//every time battle is entered, pokemon looses one strength. Gets pokemon by entering start page.
+
+
+import { sendEmail } from "./util/nodemailer.js";
+
+
+app.post("/contact", (req, res) => {
+  //sendEmail(req.body.email);
+  res.send({ message: "Your message has been submitted."} );
+});
 
 // const PORT = process.env.PORT ? Number(process.env.PORT) : 8080;
 const PORT = Number(process.env.PORT) || 8080;

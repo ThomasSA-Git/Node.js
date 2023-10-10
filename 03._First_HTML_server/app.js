@@ -6,7 +6,6 @@ app.use(express.json());
 app.use(express.static("public"));
 
 const { getWelcomeMessage } = require("./util/welcomeMessageUtil.js");
-const e = require("express");
 
 const PORT = 8080;
 
